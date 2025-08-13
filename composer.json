@@ -1,0 +1,19 @@
+{
+    "name": "alison/login",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Alison",
+            "email": "alisonfaria2013@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "src\\": "Src/"
+        }
+    }
+
+}

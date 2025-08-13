@@ -1,0 +1,104 @@
+:root {
+    --background: #0A0F1F; /* Azul quase preto */
+    --background-secondary: rgba(15, 20, 40, 0.95); /* Caixa translúcida */
+    --text: #E6F1FF; /* Branco azulado */
+    --primary: #8A2BE2; /* Roxo neon */
+    --hover: #00BFFF; /* Azul neon */
+    --input-bg: #141A33; /* Azul bem escuro */
+}
+
+body, html {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin: 0;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif;
+    background-color: var(--background);
+    color: var(--text);
+}
+
+.background-form {
+    padding: 40px 50px;
+    border-radius: 16px;
+    background-color: var(--background-secondary);
+    box-shadow: 0 0 25px rgba(0, 191, 255, 0.3);
+    max-width: 400px;
+    width: 100%;
+}
+
+.h1-form {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    color: var(--hover);
+    text-shadow: 0 0 8px rgba(0, 191, 255, 0.7);
+}
+
+.label-form {
+    display: block;
+    margin-top: 15px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.input-form {
+    height: 38px;
+    width: 100%;
+    margin-top: 5px;
+    padding: 8px 10px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--input-bg);
+    color: var(--text);
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+}
+
+.input-form:focus {
+    outline: none;
+    box-shadow: 0 0 8px var(--hover);
+    background-color: #1b2347;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.button-submit {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 6px;
+    background-color: var(--primary);
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(138, 43, 226, 0.6);
+    transition: all 0.3s ease;
+}
+
+.button-submit:hover {
+    background-color: var(--hover);
+    box-shadow: 0 0 15px var(--hover);
+    transform: scale(1.05);
+}
+
+.link-redirect {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.95rem;
+    color: var(--hover);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.link-redirect:hover {
+    text-decoration: underline;
+    color: white;
+}
