@@ -12,22 +12,36 @@
             $this->pdo = Database::getConnection();
         }
 
-        public function addUser($name, $last, $email, $pass)
+        public function addUser($name, $lastname, $email, $password)
         {
-            $query = "INSERT INTO `user`(name, last_name, email, password_hash) values(:name, :last_name, :email, :pass)";
+            $query = 'SELECT email from `user` where email = :email';
 
             $stmt = $this->pdo->prepare($query);
-
-            $stmt->bindValue(':name', $name);
-            $stmt->bindValue(':last_name', $last);
             $stmt->bindValue(':email', $email);
+            $stmt->execute();
+            $user = $stmt->fetch();
 
-            $hash = password_hash($pass, PASSWORD_DEFAULT);
-            $stmt->bindValue(':pass', $hash);
+            if (empty($user))
+            {
+                $query = "INSERT INTO `user`(name, last_name, email, password_hash) values(:name, :last_name, :email, :pass)";
 
-            $execute = $stmt->execute();
+                $stmt = $this->pdo->prepare($query);
 
-            return $execute;
+                $stmt->bindValue(':name', $name);
+                $stmt->bindValue(':last_name', $lastname);
+                $stmt->bindValue(':email', $email);
+
+                $hash = password_hash($password, PASSWORD_DEFAULT);
+                $stmt->bindValue(':pass', $hash);
+
+                $stmt->execute();
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 ?>

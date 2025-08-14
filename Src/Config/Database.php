@@ -34,7 +34,7 @@
 
         }
 
-        public static function getConnection()
+        public static function getConnection(): \PDO
             {
                 if (self::$instance === null)
                 {
