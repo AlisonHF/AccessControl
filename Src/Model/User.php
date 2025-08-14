@@ -43,5 +43,22 @@
                 return false;
             }
         }
+
+        public function login($email, $password)
+        {
+            $query = 'SELECT email, password_hash from `user` where email = :email';
+
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindValue(':email', $email);
+            $stmt->execute();
+            $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+            if ($email === $user['email'] && password_verify($password, $user['password_hash']))
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 ?>

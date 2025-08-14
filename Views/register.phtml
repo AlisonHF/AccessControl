@@ -29,14 +29,24 @@
 
         <a href="/" class="link-redirect">Já tem uma conta? Entre agora!</a>
     </form>
-
-    <?php if (isset($error_message)): ?>
-        <p><?= $error_message ?></p>
-    <?php endif; ?>
+    
 
 </div>
 
 <?php 
     $content = ob_get_clean();
+
+    if (isset($_GET['error']) && isset($_GET['type']))
+    {
+        if ($_GET['type'] == 'user_exists')
+        {
+            $message_alert = 'E-mail já cadastrado!';
+        }
+        else if($_GET['type'] == 'missing_field')
+        {
+            $message_alert = 'Preencha todos os campos obrigatórios!';
+        }
+    }
+
     require_once('../Public/layouts/template.phtml');
 ?>

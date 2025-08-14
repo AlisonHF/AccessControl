@@ -24,6 +24,19 @@
 </div>
 
 <?php 
+
+    if (isset($_GET['event']))
+        {
+            if ($_GET['event'] == 'register')
+            {
+                $message_alert = 'Cadastro realizado com sucesso!';
+            }
+            else if ($_GET['event'] == 'user_invalid')
+            {
+                $message_alert = 'E-mail ou senha incorretos!';
+            }
+        }
+
     $content = ob_get_clean();
     
     require_once('../Public/layouts/template.phtml');

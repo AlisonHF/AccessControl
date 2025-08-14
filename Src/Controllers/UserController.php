@@ -17,6 +17,30 @@
         public function index()
         {
             require_once($this->path_views . 'login.phtml');
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST')
+            {
+                $email = htmlspecialchars($_POST['email']);
+                $password = $_POST['password'] ?? '';
+
+                if (!$email || !$password)
+                {
+                    header('Location:/login?event=missing_field');
+                }
+                else {
+                    $registration_exist = $this->user->login($email, $password);
+
+                    if ($registration_exist === true)
+                    {
+                        header('Location:/home');
+                    }
+                    else
+                    {
+                        header('Location:/login?event=user_invalid');
+                    }
+                }
+            }
+
         }
 
         public function register()
@@ -30,7 +54,8 @@
 
                 if (!$name || !$last_name || !$email || !$password)
                 {
-                    header('Location:/register?error=true');
+                    header('Location:/register?error=true&type=missing_field');
+                    
                 }
                 else
                 {   
@@ -38,11 +63,11 @@
 
                     if ($register === true)
                     {
-                        header('Location:/register?error=false');
+                        header('Location:/login?event=register');
                     }
                     else
                     {
-                        header('Location:/register?error=true');
+                        header('Location:/register?error=true&type=user_exists');
                     }
                 }
             }
