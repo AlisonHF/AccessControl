@@ -20,4 +20,14 @@
         (new UserController)->home();
     }
 
+    else if ($uri == '/logoff')
+    {
+        (new UserController)->logoff();
+    }
+
+    else if ($uri == '/edit')
+    {
+        (new UserController)->edit();
+    }
+
 ?>

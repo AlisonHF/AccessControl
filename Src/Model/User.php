@@ -12,32 +12,26 @@
             $this->pdo = Database::getConnection();
         }
 
-        public function addUser($name, $lastname, $email, $password)
+        public function addUser($name, $last_name, $email, $password)
         {
-            $query = 'SELECT email from `user` where email = :email';
 
-            $stmt = $this->pdo->prepare($query);
-            $stmt->bindValue(':email', $email);
-            $stmt->execute();
+            $stmt = $this->pdo->prepare('SELECT email from `user` where email = ?');
+
+            $stmt->execute([$email]);
+
             $user = $stmt->fetch();
 
             if (empty($user))
             {
-                $query = "INSERT INTO `user`(name, last_name, email, password_hash) values(:name, :last_name, :email, :pass)";
-
-                $stmt = $this->pdo->prepare($query);
-
-                $stmt->bindValue(':name', $name);
-                $stmt->bindValue(':last_name', $lastname);
-                $stmt->bindValue(':email', $email);
+                $stmt = $this->pdo->prepare("INSERT INTO `user`(name, last_name, email, password_hash) values(?, ?, ?, ?)");
 
                 $hash = password_hash($password, PASSWORD_DEFAULT);
-                $stmt->bindValue(':pass', $hash);
 
-                $stmt->execute();
+                $stmt->execute([$name, $last_name, $email, $hash]);
 
                 return true;
             }
+            
             else
             {
                 return false;
@@ -46,11 +40,10 @@
 
         public function login($email, $password)
         {
-            $query = 'SELECT email, password_hash from `user` where email = :email';
+            $stmt = $this->pdo->prepare('SELECT email, password_hash from `user` where email = ?');
 
-            $stmt = $this->pdo->prepare($query);
-            $stmt->bindValue(':email', $email);
-            $stmt->execute();
+            $stmt->execute([$email]);
+
             $user = $stmt->fetch(\PDO::FETCH_ASSOC);
 
             if ($email === $user['email'] && password_verify($password, $user['password_hash']))
@@ -59,6 +52,68 @@
             }
 
             return false;
+        }
+
+        public function getUserInfo($email)
+        {
+            $stmt = $this->pdo->prepare('SELECT id, name, last_name, email, created_in from `user` where email = ?');
+
+            $stmt->execute([$email]);
+
+            $user = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+            if (!empty($user))
+            {
+                $user_info = [
+                    'id' => $user['id'],
+
+                    'name' => $user['name'],
+
+                    'last_name' => $user['last_name'],
+
+                    'email' => $user['email'],
+
+                    'created_in' => $user['created_in'],
+                ];
+
+                return $user_info;
+            }
+
+            return false;
+        }
+
+        public function edit($id, $name, $last_name, $email)
+        {
+            $stmt = $this->pdo->prepare('SELECT id, email from `user` where email = ?');
+
+            $stmt->execute([$email]);
+
+            $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+            if (empty($result))
+            {
+                $stmt = $this->pdo->prepare('update `user` set name = ?, last_name = ?, email = ? where id = ?');
+
+                $edit = $stmt->execute([$name, $last_name, $email, $id]);
+
+                return $edit;
+            }
+
+            else
+            {
+                foreach($result as $key => $register){
+
+                    if ($register['id'] == $id)
+                    {
+                        $stmt = $this->pdo->prepare('update `user` set name = ?, last_name = ? where id = ?');
+
+                        $edit = $stmt->execute([$name, $last_name, $id]);
+
+                        return $edit;
+                    }
+                };
+                return false;
+            }
         }
     }
 ?>

@@ -1,1 +1,32 @@
-<h1>Página HOME</h1>
+<?php
+
+// Verifica se o usuário está logado
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+    exit;
+}
+
+$user = $_SESSION['user'];
+$title = "Home";
+ob_start();
+?>
+
+<div class="background-form">
+    <h1 class="h1-form">Bem-vindo(a), <?= htmlspecialchars($user['name']) ?>!</h1>
+
+    <div class="user-info">
+        <p><strong>Nome:</strong> <?= htmlspecialchars($user['name']) ?> <?= htmlspecialchars($user['last_name']) ?></p>
+        <p><strong>E-mail:</strong> <?= htmlspecialchars($user['email']) ?></p>
+        <p><strong>Data de Cadastro:</strong> <?= htmlspecialchars($user['created_in'] ?? "Não informado") ?></p>
+    </div>
+
+    <div class="button-container">
+        <a href="/edit" class="button-submit">Editar Perfil</a>
+        <a href="/logoff" class="button-exit">Sair</a>
+    </div>
+</div>
+
+<?php
+$content = ob_get_clean();
+require_once('../Public/layouts/template.phtml');
+?>

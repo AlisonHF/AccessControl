@@ -66,6 +66,7 @@ body, html {
     display: flex;
     justify-content: center;
     margin-top: 25px;
+    gap: 10px;
 }
 
 .button-submit {
@@ -79,6 +80,7 @@ body, html {
     cursor: pointer;
     box-shadow: 0 0 10px rgba(138, 43, 226, 0.6);
     transition: all 0.3s ease;
+    text-decoration: none;
 }
 
 .button-submit:hover {
@@ -111,4 +113,50 @@ body, html {
     border-radius: 0px;
     text-align: center;
     font-weight: bold;
+}
+
+/* HOME */
+
+.home-container {
+    max-width: 500px;
+    margin: 50px auto;
+    background-color: rgba(28, 28, 28, 0.95);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0, 123, 255, 0.4);
+    text-align: center;
+    color: white;
+}
+
+.user-info {
+    text-align: left;
+    background-color: #1c1c1c;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+}
+
+.user-info p {
+    margin: 8px 0;
+}
+
+.button-exit {
+    padding: 10px 25px;
+    border: none;
+    border-radius: 6px;
+    background-color: red;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.button-exit:hover {
+    background-color: var(--hover);
+    box-shadow: 0 0 15px var(--hover);
+    transform: scale(1.05);
 }

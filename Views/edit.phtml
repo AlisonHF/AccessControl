@@ -1,0 +1,37 @@
+<?php 
+    ob_start();
+    
+    $title = 'Editar cadastro';
+?>
+
+<div class="background-form">
+
+    <form id="form-edit" action="/edit" method="POST"> 
+        <h1 class="h1-form">Editar cadastro</h1>
+
+        <input name="id" type="text" value="<?= $_SESSION['user']['id']?>" hidden>
+
+        <label class="label-form" for="name">Nome</label>
+        <input id="name" name="name" type="text" class="input-form" value="<?= $_SESSION['user']['name']?>" required>
+
+        <label class="label-form" for="last_name">Sobrenome</label>
+        <input id="last_name" name="last_name" type="text" class="input-form" value="<?= $_SESSION['user']['last_name']?>" required>
+
+        <label class="label-form" for="email">E-mail</label>
+        <input id="email" name="email" type="email" class="input-form" value="<?= $_SESSION['user']['email']?>">
+
+        <div class="button-container">
+            <button type="submit" class="button-submit">Editar</button>
+        </div>
+
+    </form>
+
+    <a href="/home" class="link-redirect">Voltar a tela principal</a>
+    
+</div>
+
+<?php 
+    $content = ob_get_clean();
+
+    require_once('../Public/layouts/template.phtml');
+?>
