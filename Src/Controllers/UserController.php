@@ -156,13 +156,45 @@
 
                 if (!$id || !$name || !$last_name || !$email) // Se algum dos campos estiverem vazios
                 {
-                    header('Location:/edit?error=missing_field');
+                    header('Location:/edit?warning=missing_field_edit');
+
                     exit;
                 }
 
                 if (!($id == $_SESSION['user']['id'])) // Verifica se o ID foi alterado no envio do formulário
                 {
-                    header('Location:/edit?error=invalid_id');
+                    header('Location:/edit?warning=invalid_id_edit');
+
+                    exit;
+                }
+
+                $current_password = $_POST['current_password'];
+                
+                $new_password = $_POST['new_password'];
+                
+                if ($current_password && $new_password) // Se será alterado a senha
+                {
+                    $password_hash_current = $this->user->getPassword($id);
+
+                    if (password_verify($current_password, $password_hash_current,))
+                    {
+                        $set = $this->user->setPassword($id, $new_password);
+                        
+                        if ($set)
+                        {
+                            header('Location:/edit?warning=success_edit');
+
+                            exit;
+                        }
+                        
+                        header('Location:/edit?warning=error_edit');
+
+                        exit;
+
+                    }
+
+                    header('Location:/edit?warning=incorrect_password_edit');
+                    
                     exit;
                 }
 
@@ -170,7 +202,8 @@
 
                 if ($edit === false) // Se não foi possível editar o registro
                 {
-                    header('Location: /edit?error=invalid_email');
+                    header('Location: /edit?warning=invalid_email_edit');
+
                     exit;
                 }
 
@@ -190,22 +223,40 @@
 
             else // Método GET
             {
-                if (isset($_GET['error']))
+                if (isset($_GET['warning']))
                 {
-                    $error = $_GET['error'];
+                    $error = $_GET['warning'];
 
                     switch($error)
                     {
-                        case 'missing_field':
+                        case 'missing_field_edit':
                             $message_alert = 'Preencha todos os campos antes de salvar!';
+
                             break;
 
-                        case 'invalid_id':
+                        case 'invalid_id_edit':
                             $message_alert = 'Ocorreu um erro, entre em contato conosco e apresente o código: 001';
+
                             break;
 
-                        case 'invalid_email':
+                        case 'invalid_email_edit':
                             $message_alert = 'E-mail já cadastrado, use outro!';
+
+                            break;
+
+                        case 'success_edit':
+                            $message_alert = 'Usuário editado com sucesso!';
+
+                            break;
+                        
+                        case 'error_edit':
+                            $message_alert = 'Ocorreu um erro, entre em contato conosco e apresente o código: 002';
+
+                            break;
+
+                        case 'incorrect_password_edit':
+                            $message_alert = 'Senha atual incorreta!';
+
                             break;
                     }
                 }

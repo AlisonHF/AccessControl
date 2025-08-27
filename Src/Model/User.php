@@ -115,5 +115,27 @@
                 return false;
             }
         }
+
+        public function getPassword($id)
+        {
+            $stmt = $this->pdo->prepare('select password_hash from `user` where id = ?');
+            
+            $stmt->execute([$id]);
+
+            $password_hash = $stmt->fetch(\PDO::FETCH_NUM); 
+
+            return $password_hash[0];
+        }
+
+        public function setPassword($id, $new_password)
+        {
+            $new_password = password_hash($new_password, PASSWORD_DEFAULT);
+
+            $stmt = $this->pdo->prepare('update `user` set password_hash = ? where id = ?');
+
+            $set = $stmt->execute([$new_password, $id]);
+
+            return $set;
+        }
     }
 ?>
