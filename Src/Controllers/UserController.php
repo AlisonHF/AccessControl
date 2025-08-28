@@ -17,8 +17,6 @@
 
         public function index()
         {
-            require_once($this->path_views . 'login.phtml');
-
             if ($_SERVER['REQUEST_METHOD'] == 'POST')
             {
                 $email = htmlspecialchars($_POST['email']);
@@ -27,7 +25,7 @@
 
                 if (!$email || !$password)
                 {
-                    header('Location:/login?event=missing_field');
+                    header('Location:/login?warning=missing_field');
                 }
                 else {
                     $registration_exist = $this->user->login($email, $password);
@@ -56,17 +54,38 @@
                     }
                     else
                     {
-                        header('Location:/login?event=user_invalid');
+                        header('Location:/login?warning=user_invalid');
+                        
                         exit;
                     }
                 }
             }
 
+            else // Método GET
+            {
+                if (isset($_GET['warning']))
+                {
+                    switch($_GET['warning'])
+                    {
+                        case 'register':
+                            $message_alert = 'Cadastro realizado com sucesso!';
+
+                            break;
+                        
+                        case 'user_invalid':
+                            $message_alert = 'E-mail ou senha incorretos!';
+
+                            break;
+                    }
+                }
+
+                require_once($this->path_views . 'login.phtml');
+            }
         }
 
         public function register()
         {
-            if ($_SERVER['REQUEST_METHOD'] == 'POST')
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') // Método POST
             {
                 $name = htmlspecialchars($_POST['name']);
 
@@ -78,7 +97,7 @@
 
                 if (!$name || !$last_name || !$email || !$password)
                 {
-                    header('Location:/register?error=true&type=missing_field');
+                    header('Location:/register?warning=missing_field_register');
                     
                 }
                 else
@@ -87,17 +106,33 @@
 
                     if ($register === true)
                     {
-                        header('Location:/login?event=register');
+                        header('Location:/login?warning=register');
                     }
                     else
                     {
-                        header('Location:/register?error=true&type=user_exists');
+                        header('Location:/register?warning=existing_user_register');
                     }
                 }
             }
 
-            else
+            else // Método GET
             {
+                if (isset($_GET['warning']))
+                {
+                    switch($_GET['warning'])
+                    {
+                        case 'missing_field_register':
+                            $message_alert = 'Preencha todos os campos obrigatórios!';
+
+                            break;
+
+                        case 'existing_user_register':
+                            $message_alert = 'E-mail já cadastrado!';
+
+                            break;
+                    }
+                }
+
                 require_once($this->path_views . 'register.phtml');
             }
             
@@ -154,7 +189,7 @@
 
                 $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
 
-                if (!$id || !$name || !$last_name || !$email) // Se algum dos campos estiverem vazios
+                if (!$id || !$name || !$last_name || !$email) // Se algum dos campos obrigatórios estiverem vazios
                 {
                     header('Location:/edit?warning=missing_field_edit');
 

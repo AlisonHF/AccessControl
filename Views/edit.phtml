@@ -1,6 +1,6 @@
 <?php 
-    ob_start();
     $title = 'Editar cadastro';
+    ob_start();
 ?>
 
 <div class="background-form">
@@ -54,7 +54,7 @@
 <script>
     // Habilita o collapse via checkbox
     const checkbox = document.getElementById('togglePassword');
-    
+
     const collapse = new bootstrap.Collapse(document.getElementById('passwordFields'), { toggle: false });
 
     checkbox.addEventListener('change', function () {

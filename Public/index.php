@@ -5,29 +5,36 @@
 
     $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-    if ($uri == '/' || $uri == '/login')
+    switch($uri)
     {
-        (new UserController)->index();
-    }
+        case '/':
+            (new UserController)->index();
+            
+            break;
 
-    else if ($uri == '/register')
-    {
-        (new UserController)->register();
-    }
+        case '/login':
+            (new UserController)->index();
 
-    else if ($uri == '/home')
-    {
-        (new UserController)->home();
-    }
+            break;
+        
+        case '/register':
+            (new UserController)->register();
 
-    else if ($uri == '/logoff')
-    {
-        (new UserController)->logoff();
-    }
+            break;
 
-    else if ($uri == '/edit')
-    {
-        (new UserController)->edit();
-    }
+        case '/home':
+            (new UserController)->home();
 
+            break;
+        
+        case '/logoff':
+            (new UserController)->logoff();
+
+            break;
+
+        case '/edit':
+            (new UserController)->edit();
+
+            break;
+    }
 ?>

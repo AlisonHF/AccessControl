@@ -18,7 +18,7 @@
         <input id="email" name="email" type="email" class="input-form" required>
 
         <label class="label-form" for="password">Senha</label>
-        <input id="password" name="password" type="password" class="input-form" required>
+        <input id="password" name="password" type="password" class="input-form">
 
         <label class="label-form" for="repeat_password">Repita a senha</label>
         <input id="repeat-password" name="repeat-password" type="password" class="input-form" required>
@@ -30,23 +30,10 @@
         <a href="/" class="link-redirect">Já tem uma conta? Entre agora!</a>
     </form>
     
-
 </div>
 
 <?php 
     $content = ob_get_clean();
-
-    if (isset($_GET['error']) && isset($_GET['type']))
-    {
-        if ($_GET['type'] == 'user_exists')
-        {
-            $message_alert = 'E-mail já cadastrado!';
-        }
-        else if($_GET['type'] == 'missing_field')
-        {
-            $message_alert = 'Preencha todos os campos obrigatórios!';
-        }
-    }
 
     require_once('../Public/layouts/template.phtml');
 ?>

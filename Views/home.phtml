@@ -1,14 +1,13 @@
 <?php
+    // Verifica se o usuário está logado
+    if (!isset($_SESSION['user'])) {
+        header("Location: login.php");
+        exit;
+    }
 
-// Verifica se o usuário está logado
-if (!isset($_SESSION['user'])) {
-    header("Location: login.php");
-    exit;
-}
-
-$user = $_SESSION['user'];
-$title = "Home";
-ob_start();
+    $user = $_SESSION['user'];
+    $title = "Home";
+    ob_start();
 ?>
 
 <div class="background-form">
@@ -27,6 +26,7 @@ ob_start();
 </div>
 
 <?php
-$content = ob_get_clean();
-require_once('../Public/layouts/template.phtml');
+    $content = ob_get_clean();
+
+    require_once('../Public/layouts/template.phtml');
 ?>
