@@ -15,9 +15,9 @@
             $this->user = new User();
         }
 
-        public function index()
+        public function index() // Login
         {
-            if ($_SERVER['REQUEST_METHOD'] == 'POST')
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') // Método POST
             {
                 $email = htmlspecialchars($_POST['email']);
 
@@ -25,8 +25,9 @@
 
                 if (!$email || !$password)
                 {
-                    header('Location:/login?warning=missing_field');
+                    header("Location:/login?warning=missing_field&email=$email");
                 }
+
                 else {
                     $registration_exist = $this->user->login($email, $password);
 
@@ -52,9 +53,10 @@
 
                         exit;
                     }
+
                     else
                     {
-                        header('Location:/login?warning=user_invalid');
+                        header("Location:/login?warning=user_invalid&email=$email");
                         
                         exit;
                     }
@@ -65,6 +67,8 @@
             {
                 if (isset($_GET['warning']))
                 {
+                    $email = $_GET['email'];
+
                     switch($_GET['warning'])
                     {
                         case 'register':
@@ -83,7 +87,7 @@
             }
         }
 
-        public function register()
+        public function register() // Registrar
         {
             if ($_SERVER['REQUEST_METHOD'] == 'POST') // Método POST
             {
@@ -95,22 +99,36 @@
 
                 $password = $_POST['password'] ?? '';
 
-                if (!$name || !$last_name || !$email || !$password)
+                $password_repeat = $_POST['repeat_password'];
+
+                if (!$name || !$last_name || !$email || !$password || $password_repeat)
                 {
-                    header('Location:/register?warning=missing_field_register');
+                    header("Location:/register?warning=missing_field_register&name=$name&last_name=$last_name&email=$email");
                     
                 }
                 else
                 {   
-                    $register = $this->user->addUser($name, $last_name, $email, $password);
+                    $register = $this->user->register($name, $last_name, $email, $password, $password_repeat);
 
-                    if ($register === true)
+                    if ($register[0] === true)
                     {
                         header('Location:/login?warning=register');
                     }
+
                     else
                     {
-                        header('Location:/register?warning=existing_user_register');
+                        switch($register[1])
+                        {
+                            case 'existing_user':
+                                header("Location:/register?warning=existing_user_register&name=$name&last_name=$last_name&email=$email");
+
+                                break;
+
+                            case 'password_repeat_distinct':
+                                header("Location:/register?warning=password_repeat_distinct&name=$name&last_name=$last_name&email=$email");
+
+                                break;
+                        }                
                     }
                 }
             }
@@ -119,6 +137,12 @@
             {
                 if (isset($_GET['warning']))
                 {
+                    $name = $_GET['name'];
+
+                    $last_name = $_GET['last_name'];
+
+                    $email = $_GET['email'];
+
                     switch($_GET['warning'])
                     {
                         case 'missing_field_register':
@@ -130,6 +154,11 @@
                             $message_alert = 'E-mail já cadastrado!';
 
                             break;
+
+                        case 'password_repeat_distinct':
+                            $message_alert = 'As senhas digitadas são diferentes!';
+
+                            break;
                     }
                 }
 
@@ -138,7 +167,7 @@
             
         }
 
-        public function home()
+        public function home() // Página home
         {
             session_start();
 
@@ -166,7 +195,7 @@
             
         }
 
-        public function logoff()
+        public function logoff() // Logoff
         {
             session_start();
 
@@ -175,7 +204,7 @@
             require_once($this->path_views . 'login.phtml');
         }
 
-        public function edit()
+        public function edit() // Editar
         {
             session_start();
 
@@ -217,7 +246,7 @@
                         
                         if ($set)
                         {
-                            header('Location:/edit?warning=success_edit');
+                            header('Location:/home?register=true');
 
                             exit;
                         }
@@ -278,11 +307,6 @@
                             $message_alert = 'E-mail já cadastrado, use outro!';
 
                             break;
-
-                        case 'success_edit':
-                            $message_alert = 'Usuário editado com sucesso!';
-
-                            break;
                         
                         case 'error_edit':
                             $message_alert = 'Ocorreu um erro, entre em contato conosco e apresente o código: 002';
@@ -300,8 +324,6 @@
 
                 exit;
             }           
-        
         }
-
     }
 ?>

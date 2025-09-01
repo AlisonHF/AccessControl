@@ -12,8 +12,13 @@
             $this->pdo = Database::getConnection();
         }
 
-        public function addUser($name, $last_name, $email, $password)
+        public function register($name, $last_name, $email, $password, $password_repeat) // Registrar usuário
         {
+
+            if ($password != $password_repeat)
+            {
+                return [false, 'password_repeat_distinct'];
+            }
 
             $stmt = $this->pdo->prepare('SELECT email from `user` where email = ?');
 
@@ -29,16 +34,16 @@
 
                 $stmt->execute([$name, $last_name, $email, $hash]);
 
-                return true;
+                return [true];
             }
             
             else
             {
-                return false;
+                return [false, 'existing_user'];
             }
         }
 
-        public function login($email, $password)
+        public function login($email, $password) // Realizar login
         {
             $stmt = $this->pdo->prepare('SELECT email, password_hash from `user` where email = ?');
 
@@ -54,7 +59,7 @@
             return false;
         }
 
-        public function getUserInfo($email)
+        public function getUserInfo($email) // Pegar informações do usuário 
         {
             $stmt = $this->pdo->prepare('SELECT id, name, last_name, email, created_in from `user` where email = ?');
 
@@ -82,7 +87,7 @@
             return false;
         }
 
-        public function edit($id, $name, $last_name, $email)
+        public function edit($id, $name, $last_name, $email) // Editar cadastro usuário
         {
             $stmt = $this->pdo->prepare('SELECT id, email from `user` where email = ?');
 
@@ -116,7 +121,7 @@
             }
         }
 
-        public function getPassword($id)
+        public function getPassword($id) // Pegar hash da senha do usuário
         {
             $stmt = $this->pdo->prepare('select password_hash from `user` where id = ?');
             
@@ -127,7 +132,7 @@
             return $password_hash[0];
         }
 
-        public function setPassword($id, $new_password)
+        public function setPassword($id, $new_password) // Editar senha
         {
             $new_password = password_hash($new_password, PASSWORD_DEFAULT);
 

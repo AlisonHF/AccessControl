@@ -10,7 +10,7 @@
         <h1 class="h1-form">Login</h1>
 
         <label class="label-form" for="email">Usuário</label>
-        <input id="email" name="email" type="text" class="input-form" required>
+        <input id="email" name="email" type="text" class="input-form" value="<?= isset($email) ? $email : '' ?>" required>
 
         <label class="label-form" for="password">Senha</label>
         <input id="password" name="password" type="password" class="input-form" required>
