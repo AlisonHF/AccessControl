@@ -4,6 +4,8 @@
 
     use src\Model\User;
 
+    use src\Utils\RecoveryEmail;
+
     class UserController
     {
         private $path_views =  __DIR__ . '/../../views/';
@@ -324,6 +326,20 @@
 
                 exit;
             }           
+        }
+
+        public function forgotPassword()
+        {
+
+            $cod = rand(100000, 999999);
+
+            $email = new RecoveryEmail('alisonfaria2013@gmail.com', $cod);
+
+            $email->sendEmail();
+
+            require_once($this->path_views . 'forgot_password.phtml');
+            
+            exit;
         }
     }
 ?>

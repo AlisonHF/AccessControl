@@ -36,5 +36,11 @@
             (new UserController)->edit();
 
             break;
+
+        case '/forgot_password':
+            (new UserController)->forgotPassword();
+
+            break;
+        
     }
 ?>
