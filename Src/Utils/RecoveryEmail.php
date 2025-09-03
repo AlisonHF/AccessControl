@@ -49,7 +49,7 @@ class RecoveryEmail{
     {
         $this->email->Subject = 'Código de recuperação';
 
-        $this->email->Body = 'Recebemos um pedido de redefinição de sua senha do seu acesso ao aplicativo AccessControl.<br/>Por favor, use o código abaixo para redefinir sua senha:';
+        $this->email->Body = 'Recebemos um pedido de redefinição de sua senha do seu acesso ao aplicativo AccessControl.<br/><br/>Por favor, use o código abaixo para redefinir sua senha:';
 
         $this->email->Body .= "<br><h1>$this->cod</h1>";
 

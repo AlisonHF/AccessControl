@@ -41,6 +41,16 @@
             (new UserController)->forgotPassword();
 
             break;
+
+        case '/forgot_password/recovery_cod':
+            (new UserController)->recoveryCod();
+
+            break;
+
+        case '/forgot_password/reset_password':
+            (new UserController)->resetPassword();
+
+            break;
         
     }
 ?>

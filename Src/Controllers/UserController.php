@@ -331,15 +331,75 @@
         public function forgotPassword()
         {
 
-            $cod = rand(100000, 999999);
+            $title = 'Redifinir senha';
 
-            $email = new RecoveryEmail('alisonfaria2013@gmail.com', $cod);
+            $action = '/forgot_password/recovery_cod';
 
-            $email->sendEmail();
+            $form_title = 'Redifinir senha';
 
-            require_once($this->path_views . 'forgot_password.phtml');
-            
-            exit;
+            $input_name = 'email';
+
+            $form_label = 'Digite seu e-mail:';
+
+            require_once($this->path_views . 'password_recovery.phtml');
+
+        }
+
+        public function recoveryCod()
+        {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST')
+            {
+                session_start();
+
+                $title = 'Redifinir senha';
+
+                $action = '/forgot_password/reset_password';
+
+                $form_title = 'Código de recuperação';
+
+                $input_name = 'cod';
+
+                $form_label = 'Digite o código de recuperação:';
+
+                $cod = rand(100000, 999999);
+
+                $_SESSION['rec_cod'] = $cod;
+
+                $email = new RecoveryEmail($_POST['email'], $cod);
+
+                $email->sendEmail();
+            }
+
+            require_once($this->path_views . 'password_recovery.phtml');
+        }
+
+        public function resetPassword()
+        {
+             if ($_SERVER['REQUEST_METHOD'] == 'POST')
+            {   
+                session_start();
+
+                $entered_cod = $_POST['cod'];
+
+                if ($entered_cod == $_SESSION['rec_cod'])
+                {
+                    $title = 'Redifinir senha';
+
+                    $action = '';
+
+                    $form_title = 'Nova senha';
+
+                    $form_label = 'Digite sua nova senha:';
+
+                    require_once($this->path_views . 'password_recovery.phtml');
+
+                    exit;
+                }
+
+                header('Location:/forgot_password');
+                
+            }
+                
         }
     }
 ?>
